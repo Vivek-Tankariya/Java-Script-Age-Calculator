@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="style.css">   <!--it will connect to style css file-->
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>JavaScript<br><span>Age Calculator</span></h1>
+            <div class="input-box">
+                <input type="date" id="date">
+                <button onclick="calculateAge()">calculate</button>                          <!--added function on click-->
+            </div>
+            <p id="result"></p>             <!--to print result-->
+        </div>
+    </div>
+
+    <script>
+        let userInput = document.getElementById("date");            /*retrieves the HTML element with the ID "date" 
+                                                                      to the userInput variable, allowing you to store 
+                                                                      and work with that element in your JavaScript code.  */
+        
+        userInput.max = new Date().toISOString().split("T")[0];     /*restriction - user can give input till current date only*/
+                                                                    /*.max = property of an HTML input element, represents the maximum value allowed for that input. It is typically used with input types like date, time, or datetime-local.*/
+                                                                    /*new Date(): This creates a new Date object that represents the current date and time.*/
+                                                                    /*toISOString(): This is a method of the Date object that returns a string representation of the date in the ISO 8601 format.*/
+                                                                    /*split("T"): This method is used to split a string into an array of substrings*/
+                                                                    /* In this case, it splits the ISO 8601 string representation at the "T" character, which separates the date and time portions.*/
+                                                                    /*[0]: This retrieves the first element of the array resulting from the previous split("T") operation, which corresponds to the date portion.*/
+
+        let result = document.getElementById("result");
+
+        function calculateAge(){
+            let birthDate = new Date(userInput.value);              /*variable assigned to input date*/
+
+            let d1 = birthDate.getDate();                             /*.getDate method retrives the date obly (from 1 to 31)*/
+            let m1 = birthDate.getMonth() + 1;                        /*adding 1 as it starts from 0*/
+            let y1 = birthDate.getFullYear();
+            
+
+            let today = new Date();     /*current date and time object*/
+
+            let d2 = today.getDate();
+            let m2 = today.getMonth() + 1;  
+            let y2 = today.getFullYear();    
+
+            let d3,m3,y3; /*to store difference*/
+            y3 = y2 - y1;
+
+            if(m2>=m1){
+                m3 = m2 - m1;
+            }else{
+                y3--;
+                m3 = 12 + m2 - m1;
+            }
+            
+            if(d2>=d1){
+                d3 = d2 - d1;
+            }else{
+                    m3--;
+                    d3 = getDaysInMonth(y1,m1) + d2 - d1;
+            }
+            if(m3 < 0){
+                m3 = 11;
+                y3--;
+            }
+            /*console.log(y3,m3,d3);*/   /*to dispaly msg on console first and check the result*/
+            result.innerHTML = `Ae Chamdi, You Are <span>${y3}</span> Years, <span>${m3}</span> Months And <span>${d3}</span> Days Old`;      /*pass msg to result of HTML*/   /*Added span to change its color*/
+        }
+
+
+        function getDaysInMonth(year,month){                   /* year and month are just parameters*/
+            return new Date(year,month,0).getDate();            /*creating new object with year and month, by passing 0, it will create obj for last day of given month*/
+                                                                    /*get date will give to the date of it, so we will know how many days are in given month of the given year*/                                         
+        }
+
+        
+
+    </script>
+
+</body>
+</html>
